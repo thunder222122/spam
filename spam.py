@@ -6,8 +6,8 @@ import time
 # ========== CONFIGURATION ==========
 # List of Discord tokens (user tokens)
 TOKENS = [
-    "MTUwMjk5NTI1MzgwMjU2NTYzMg.GHrxTe.X4rItmK_3l6eRyJ70J2hBuFeOPWwKsz6l1KUbs",
-    "MTUwNTE4NDkwNzQzMTkwMzI4Mg.Goi5gt.1O3xKzWnxMFXkP7giiE-V9TFEX289HfdPx8O6Q",
+    "MTUwMjk5NTI1MzgwMjU2NTYzMg.GoATHa.qNOjbMzURqSmcp1z4w3kFLbyd6ET8cZtchW_RQ",
+    "MTUyMDk5MjA2OTQwODI2NDI4Mg.Gxd7sk.A3vT04fiIB3BjGYeM9ikzaAoMMp-F6MSzeOEfc",
     # Add as many as you want
 ]
 
@@ -35,6 +35,12 @@ async def send_messages(session: aiohttp.ClientSession, token: str, alias: str,
                          channel_id: int, message: str, delay: float, 
                          max_msgs: int, proxy: str = None):
     """Send messages from a single token with specified delay"""
+
+    #  Staggered login delay
+    if initial_delay > 0:
+        print(f"[{alias}] Waiting {initial_delay}s before first message...")
+        await asyncio.sleep(initial_delay)
+        
     headers = {
         "Authorization": token,
         "Content-Type": "application/json"
@@ -76,6 +82,10 @@ async def main():
     print(f"Channel: {CHANNEL_ID}")
     print(f"Message: {MESSAGE}")
     print(f"Delay: {DELAY}s per token")
+    warmup_seconds = 120  # 2 minutes
+    print(f" Waiting {warmup_seconds}s before starting to avoid detection...")
+    await asyncio.sleep(warmup_seconds)
+    print(f" Warm-up complete. Starting spam now!")
     if MAX_MESSAGES:
         print(f"Max messages per token: {MAX_MESSAGES}")
     else:
@@ -93,12 +103,11 @@ async def main():
             # Use token's first 8 chars as alias
             alias = token[:8]
             proxy = proxy_list[idx % len(PROXIES)] if PROXIES else None
+            initial_delay = idx * 3.0
             task = asyncio.create_task(
-                send_messages(session, token, alias, CHANNEL_ID, MESSAGE, DELAY, MAX_MESSAGES, proxy)
+                send_messages(session, token, alias, CHANNEL_ID, MESSAGE, DELAY, MAX_MESSAGES, proxy, initial_delay)
             )
             tasks.append(task)
-            # Stagger start to avoid burst login detection
-            await asyncio.sleep(0.5)
         
         # Wait for all tasks to complete (or until KeyboardInterrupt)
         try:
