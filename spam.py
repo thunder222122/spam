@@ -8,7 +8,7 @@ import time
 # Token from environment variable (set before running)
 # Windows: set DISCORD_TOKEN=your_token_here
 # Linux/Mac: export DISCORD_TOKEN=your_token_here
-TOKEN = os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("TOKEN")
 
 # Channel ID to send messages to
 CHANNEL_ID = 1521105893272584252  # Replace with your channel ID
