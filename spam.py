@@ -7,7 +7,7 @@ import time
 # List of Discord tokens (user tokens)
 TOKENS = [
     "MTUwMjk5NTI1MzgwMjU2NTYzMg.GHrxTe.X4rItmK_3l6eRyJ70J2hBuFeOPWwKsz6l1KUbs",
-    "MTUwNTE4NDkwNzQzMTkwMzI4Mg.Goi5gt.1O3xKzWnxMFXkP7giiE-V9TFEX289HfdPx8O6Q,
+    "MTUwNTE4NDkwNzQzMTkwMzI4Mg.Goi5gt.1O3xKzWnxMFXkP7giiE-V9TFEX289HfdPx8O6Q",
     # Add as many as you want
 ]
 
